@@ -1,26 +1,15 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useState, useContext } from 'react';
 import './TodoList.css';
+import { TodoListContext } from "../../context/TodoListContext"
 import TodoItem from '../../components/TodoItem'
 import { useHistory } from 'react-router-dom'
 
-const sampleTodoList = [
-  {
-    id: 0,
-    title: 'サンプル0',
-    description: 'サンプル0',
-  },
-  {
-    id: 1,
-    title: 'サンプル1',
-    description: 'サンプル1',
-  }
-];
 
 const TodoList = () => {
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [todoList, setTodoList] = useState(sampleTodoList);
+  const {todoList, setTodoList} = useContext(TodoListContext);
     // settodolistでtodolistを更新
   const history = useHistory();
 

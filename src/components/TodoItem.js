@@ -3,7 +3,7 @@ import './TodoItem.css'
 
 const TodoItem = (props) => {
     return (
-        <div className="todo-item" key={props.todo.id} onClick={props.onClick}>
+        <div className="todo-item" onClick={props.onClick}>
             <div className="todo-item-title">{props.todo.title}</div>
             <div className="todo-item-description">{props.todo.description}</div>
         </div>
@@ -11,6 +11,8 @@ const TodoItem = (props) => {
 }
 
 export default TodoItem
+
+// 6行目のkey={props.todo.id}がonClickの前にあったがこれはなくても良い
 
 // const obj = {
 //     name: "masa",
