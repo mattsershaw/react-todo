@@ -1,6 +1,7 @@
 import { Fragment, useState } from 'react';
 import './TodoList.css';
 import TodoItem from '../../components/TodoItem'
+import { useHistory } from 'react-router-dom'
 
 const sampleTodoList = [
   {
@@ -21,6 +22,7 @@ const TodoList = () => {
   const [description, setDescription] = useState('');
   const [todoList, setTodoList] = useState(sampleTodoList);
     // settodolistでtodolistを更新
+  const history = useHistory();
 
   const changedTitle = (e) => {
     setTitle(e.target.value);
@@ -56,8 +58,7 @@ const TodoList = () => {
         <button className="todo-add-button" onClick={clickedButton}>Click Me!</button>
       </div>
       {todoList.map((todo) => {
-        return <TodoItem todo={todo} key={todo.id}/>;
-         
+        return <TodoItem todo={todo} key={todo.id} onClick={() => history.push(`/edit/${todo.id}`)}/>;         
       })}
     </Fragment>
   );
