@@ -28,7 +28,7 @@ const clickedSave = () => {
         }
     })
     setTodoList(newTodoList);
-    history.push('/');
+    history.push('/'); // URL関連
 }
 const clickedDelete = () => {
     const newTodoList = todoList.slice().filter((todo) => todo.id !== id);
