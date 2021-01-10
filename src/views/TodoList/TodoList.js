@@ -1,5 +1,6 @@
-import { Fragment, useState, useContext } from 'react';
+import { Fragment,　useEffect, useState, useContext } from 'react';
 import './TodoList.css';
+import axios from 'axios';
 import { TodoListContext } from "../../context/TodoListContext"
 import TodoItem from '../../components/TodoItem'
 import { useHistory } from 'react-router-dom'
@@ -13,13 +14,28 @@ const TodoList = () => {
     // settodolistでtodolistを更新
   const history = useHistory();
 
+  useEffect(() => {
+    const getTodoList = async () => {
+      const response = await axios.get('todos'); // URLのこと
+      setTodoList(response.data);
+      // axios.get('https://api-creator.tk/react-lesson/todos');
+      // .then((response) =>{
+      //   console.log(response.data);
+      //   setTodoList(response.data);
+      // }); この4行の処理を2行でかける
+    };
+    getTodoList();
+  }, [setTodoList]);
+
+
+
   const changedTitle = (e) => {
     setTitle(e.target.value);
   }
   const changedDescription = (e) => {
     setDescription(e.target.value);
   }
-  const clickedButton = () => {
+  const clickedButton = async () => {
     let newId = 0;
     if (todoList.length > 0) {
       newId = Math.max(...todoList.map((todo)=>todo.id)) + 1;
@@ -31,6 +47,9 @@ const TodoList = () => {
       title: title,
       description: description,
     };
+
+    await axios.post('todos', newTodo); // URLのこと
+
     newTodoList.push(newTodo);
     setTodoList(newTodoList);
     setTitle('');
