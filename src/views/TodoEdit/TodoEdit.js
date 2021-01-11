@@ -68,7 +68,7 @@ const clickedSave = async () => {
 const clickedDelete = async () => {
     const newTodoList = todoList.slice().filter((todo) => todo.id !== id);
 
-    await axios.delete(`todos/${id}`); // 文字列の中に変数を埋め込む時
+    await axios.delete(`todos/${id}`); // 文字列の中に変数を埋め込む時は``
 
     setTodoList(newTodoList)
     history.push('/');
