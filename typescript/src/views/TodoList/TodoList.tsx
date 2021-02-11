@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import Axios from 'axios';
+import React, { useEffect, useState, useContext } from 'react';
+import Axios, { AxiosResponse } from 'axios';
+import { TodoListContext } from 'src/context/TodoListContext';
 import { Todo } from 'src/model/Todo';
 import { TodoItem } from 'src/components/TodoItem';
 import styles from './TodoList.css'; // src/App.cssも可
@@ -23,24 +24,69 @@ import styles from './TodoList.css'; // src/App.cssも可
 // ];
 
 export const TodoList: React.FC = () => {
-  const [todoList, setTodoList] = useState<Todo[]>([]);
+  // const [todoList, setTodoList] = useState<Todo[]>([]); // どこのコンポーネントからも使えるようにする
+
+  const { todoList, setTodoList } = useContext(TodoListContext); // グローバルステイトで管理
+
+  // const [title, setTitle] = useState('');
+  // const [description, setDescription] = useState(''); // ユーザー側でデーターを持っている
+  const [todo, setTodo] = useState<Todo>({
+    //todoをstate化すればいちいちtitleとdesc作らなくていい
+    // id: 0, // id項目をなくしたい(post、putの場合など)
+    title: '',
+    description: '',
+  });
 
   useEffect(() => {
-    const getTodoList = async () => {
+    // const getTodoList = async () => {
+    //   const response = await Axios.get<Todo[]>('todos');
+    //   setTodoList(response.data);
+    // };
+    // getTodoList();
+    (async () => {
       const response = await Axios.get<Todo[]>('todos');
       setTodoList(response.data);
-    };
-    getTodoList();
-  }, [setTodoList]);
+    })();
+  }, [setTodoList]); // 即時関数の書き方
+
+  const changedTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newTodo = Object.assign({}, todo);
+    newTodo.title = e.target.value; // titleが上書きされたもの
+    setTodo(newTodo);
+  };
+
+  const changedDescription = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newTodo = Object.assign({}, todo);
+    newTodo.description = e.target.value; // descが上書きされたもの
+    setTodo(newTodo);
+  };
+
+  const addClick = async () => {
+    const response = await Axios.post<Todo, AxiosResponse<string>>(
+      'todos',
+      todo
+    );
+    const newTodoList = todoList.slice();
+    const newTodo = Object.assign({}, todo);
+    newTodo.id = parseInt(response.data); // 数字型に変換
+
+    newTodoList.push(newTodo);
+    setTodoList(newTodoList);
+  };
 
   return (
     <React.Fragment>
       <div>
-        <input className={styles.todoTitleInput} />
-        <textarea className={styles.todoDescriptionInput} />
+        <input className={styles.todoTitleInput} onChange={changedTitle} />
+        <textarea
+          className={styles.todoDescriptionInput}
+          onChange={changedDescription}
+        />
       </div>
       <div>
-        <button className={styles.todoAddButton}>Click Me!!!</button>
+        <button className={styles.todoAddButton} onClick={addClick}>
+          Click Me!!!
+        </button>
       </div>
 
       {todoList.map((todo) => {
