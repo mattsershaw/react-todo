@@ -14,6 +14,7 @@ module.exports = {
     host: 'localhost',
     port: 3000,
     publicPath: '/',
+    historyApiFallback: true,
   },
   resolve: {
     alias: {

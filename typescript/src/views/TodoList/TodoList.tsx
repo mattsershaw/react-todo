@@ -4,6 +4,8 @@ import { TodoListContext } from 'src/context/TodoListContext';
 import { Todo } from 'src/model/Todo';
 import { TodoItem } from 'src/components/TodoItem';
 import styles from './TodoList.css'; // src/App.cssも可
+import { useHistory } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
 // const todos: Todo[] = [
 //   {
@@ -36,6 +38,8 @@ export const TodoList: React.FC = () => {
     title: '',
     description: '',
   });
+
+  const history = useHistory();
 
   useEffect(() => {
     // const getTodoList = async () => {
@@ -76,6 +80,9 @@ export const TodoList: React.FC = () => {
 
   return (
     <React.Fragment>
+      {/* <div>
+        <Link to="/edit/1">Edit</Link>
+      </div> */}
       <div>
         <input className={styles.todoTitleInput} onChange={changedTitle} />
         <textarea
@@ -90,7 +97,15 @@ export const TodoList: React.FC = () => {
       </div>
 
       {todoList.map((todo) => {
-        return <TodoItem key={todo.id} todo={todo} />;
+        return (
+          <TodoItem
+            key={todo.id}
+            todo={todo}
+            onClick={() => {
+              return history.push(`/edit/${todo.id}`);
+            }}
+          />
+        );
         // todoを引数としてTodo[]を回す
       })}
     </React.Fragment>
