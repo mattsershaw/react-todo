@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
-import { Todo } from '../../model/Todo';
-import { TodoItem } from '../../components/TodoItem';
-import styles from './TodoList.css';
+import { Todo } from 'src/model/Todo';
+import { TodoItem } from 'src/components/TodoItem';
+import styles from './TodoList.css'; // src/App.cssも可
 
 // const todos: Todo[] = [
 //   {
